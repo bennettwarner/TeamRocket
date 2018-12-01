@@ -6,4 +6,5 @@ event_db = TinyDB('events.json')
 #user_db.insert({'username': 'john', 'password': '123'})
 
 users = Query()
-print(user_db.search(users.username == 'john'))
+current_user = user_db.search(users.username == 'john')
+print(current_user[0]['password'])

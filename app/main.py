@@ -11,7 +11,8 @@ app = bottle.Bottle()
 server_secret = 'TEAMROCKET'
 
 class AuthBackend(object):
-    user = {'id': 1237832, 'username': 'ben', 'password': '123', 'data': {'sex': 'male', 'active': True}}
+    users = Query()
+    #user = {'id': 1237832, 'username': 'ben', 'password': '123', 'data': {'sex': 'male', 'active': True}}
 
     def authenticate_user(self, username, password):
         """Authenticate User by username and password.
@@ -19,8 +20,11 @@ class AuthBackend(object):
         Returns:
             A dict representing User Record or None.
         """
-        if username == self.user['username'] and password == self.user['password']:
-            return self.user
+        user_db = TinyDB('users.json')
+        current_user = user_db.search(self.users.username == username)
+
+        if current_user != [] and username == current_user[0][username] and password == current_user[0][password]:
+            return current_user[0]
         return None
 
     def get_user(self, user_id):
