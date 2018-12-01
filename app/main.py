@@ -11,8 +11,7 @@ app = bottle.Bottle()
 server_secret = 'TEAMROCKET'
 
 class AuthBackend(object):
-    users = Query()
-    #user = {'id': 1237832, 'username': 'ben', 'password': '123', 'data': {'sex': 'male', 'active': True}}
+    user = {'id': 1237832, 'username': 'teamrocket', 'password': '123', 'data': {'sex': 'male', 'active': True}}
 
     def authenticate_user(self, username, password):
         """Authenticate User by username and password.
@@ -20,21 +19,23 @@ class AuthBackend(object):
         Returns:
             A dict representing User Record or None.
         """
-        user_db = TinyDB('users.json')
-        current_user = user_db.search(self.users.username == username)
-
-        if current_user != [] and username == current_user[0][username] and password == current_user[0][password]:
-            return current_user[0]
+        if username == self.user['username'] and password == self.user['password']:
+            return self.user
         return None
 
     def get_user(self, user_id):
+        """Retrieve User By ID.
+
+        Returns:
+            A dict representing User Record or None.
+        """
         if user_id == self.user['id']:
             return {k: self.user[k] for k in self.user if k != 'password'}
         return None
 
 provider_plugin = JWTProviderPlugin(
     keyword='jwt',
-    auth_endpoint='/auth',
+    auth_endpoint='/api/auth',
     backend=AuthBackend(),
     fields=('username', 'password'),
     secret=server_secret,
@@ -48,7 +49,7 @@ app.install(provider_plugin)
 @jwt_auth_required
 def private_resource():
     return {"Auth": "True"}
-
+'''
 
 @app.post('/create_user')
 def create_user():
@@ -62,5 +63,5 @@ def create_user():
         user_db.insert({'id': time.gmtime(), 'username': username, 'password': password})
         return {'Result': 'Success'}
 
-
+'''
 bottle.run(app=app, port=8080)
