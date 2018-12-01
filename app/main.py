@@ -1,6 +1,7 @@
 import bottle
 from bottle_jwt import (JWTProviderPlugin, jwt_auth_required)
 from tinydb import TinyDB, Query
+import time
 
 user_db = TinyDB('users.json')
 event_db = TinyDB('events.json')
@@ -22,6 +23,10 @@ class AuthBackend(object):
             return self.user
         return None
 
+    def get_user(self, user_id):
+        if user_id == self.user['id']:
+            return {k: self.user[k] for k in self.user if k != 'password'}
+        return None
 
 provider_plugin = JWTProviderPlugin(
     keyword='jwt',
@@ -39,6 +44,19 @@ app.install(provider_plugin)
 @jwt_auth_required
 def private_resource():
     return {"Auth": "True"}
+
+
+@app.post('/create_user')
+def create_user():
+    user_query = Query()
+    username = bottle.request.forms.get('email')
+    print(username)
+    password = bottle.request.forms.get('password')
+    if len(user_db.search(user_query.username == username)) > 0:
+        return {'Error': 'User already exists!'}
+    else:
+        user_db.insert({'id': time.gmtime(), 'username': username, 'password': password})
+        return {'Result': 'Success'}
 
 
 bottle.run(app=app, port=8080)
