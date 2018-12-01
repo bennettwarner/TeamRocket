@@ -5,13 +5,13 @@ function userLogin() {
     var email = $('#inputEmail').val();
     var pw = $("#inputPassword").val();
 
-    $('#signin-button').on('click', function() => {
+    $('#signin-button').on('click', function() {
         $.ajax({
-                url: 'auth',
+                url: '/api/auth',
                 type: 'POST',
                 data: {
-                    email: email,
-                    pw: pw
+                    username: email,
+                    password: pw
                 },
             }).done(function(data) {
 
@@ -19,7 +19,9 @@ function userLogin() {
                 console.log(data.expires);
                 localStorage.setItem('auth', data.token);
                 // bring back to splash page
-
+                window.location.href = "/html/index.html";
+                $('#join_group').prop('disabled', false);
+                $('#host_group').prop('disabled', false);
             })
             .fail(function(data) {
                 console.log(data.AuthError);
