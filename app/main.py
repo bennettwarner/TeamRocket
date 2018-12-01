@@ -2,6 +2,8 @@ import bottle
 from bottle_jwt import (JWTProviderPlugin, jwt_auth_required)
 from tinydb import TinyDB, Query
 
+user_db = TinyDB('users.json')
+event_db = TinyDB('events.json')
 
 app = bottle.Bottle()
 
@@ -20,16 +22,6 @@ class AuthBackend(object):
             return self.user
         return None
 
-    def get_user(self, user_id):
-        """Retrieve User By ID.
-
-        Returns:
-            A dict representing User Record or None.
-        """
-        if user_id == self.user['id']:
-            return {k: self.user[k] for k in self.user if k != 'password'}
-        return None
-
 
 provider_plugin = JWTProviderPlugin(
     keyword='jwt',
@@ -46,7 +38,7 @@ app.install(provider_plugin)
 @app.get('/')
 @jwt_auth_required
 def private_resource():
-    return {"scope": "For your eyes only!", "user": bottle.request.get_user()}
+    return {"Auth": "True"}
 
 
 bottle.run(app=app, port=8080)
