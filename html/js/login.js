@@ -1,11 +1,9 @@
 'use strict'
 
-
 function userLogin() {
-    var email = $('#inputEmail').val();
-    var pw = $("#inputPassword").val();
-
     $('#signin-button').on('click', function() {
+        var email = $('#inputEmail').val();
+        var pw = $("#inputPassword").val();
         $.ajax({
                 url: '/api/auth',
                 type: 'POST',
@@ -14,7 +12,6 @@ function userLogin() {
                     password: pw
                 },
             }).done(function(data) {
-
                 console.log(data.token);
                 console.log(data.expires);
                 localStorage.setItem('auth', data.token);
