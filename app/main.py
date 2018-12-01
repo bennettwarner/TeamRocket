@@ -1,8 +1,7 @@
 import bottle
 from bottle_jwt import (JWTProviderPlugin, jwt_auth_required)
 from tinydb import TinyDB, Query
-
-user_db = TinyDB('users.json')
+import random
 event_db = TinyDB('events.json')
 
 app = bottle.Bottle()
@@ -10,7 +9,7 @@ app = bottle.Bottle()
 server_secret = 'TEAMROCKET'
 
 class AuthBackend(object):
-    user = {'id': 1237832, 'username': 'test@test', 'password': '123', 'data': {'sex': 'male', 'active': True}}
+    user = {'id': 1237832, 'username': 'test', 'password': '123', 'data': {'sex': 'male', 'active': True}}
 
     def authenticate_user(self, username, password):
         """Authenticate User by username and password.
@@ -50,21 +49,25 @@ app.install(provider_plugin)
 @jwt_auth_required
 def private_resource():
     return {"Auth": "True"}
-'''
 
-@app.post('/create_user')
-def create_user():
-    user_query = Query()
-    username = bottle.request.forms.get('email')
-    print(username)
-    password = bottle.request.forms.get('password')
-    if len(user_db.search(user_query.username == username)) > 0:
-        return {'Error': 'User already exists!'}
-    else:
-        user_db.insert({'id': time.gmtime(), 'username': username, 'password': password})
-        return {'Result': 'Success'}
 
-'''
+@app.post('/api/event/create')
+#@jwt_auth_required
+def create_event():
+    name = bottle.request.forms.get('name')
+    game = bottle.request.forms.get('game')
+    location = bottle.request.forms.get('location')
+    time = bottle.request.forms.get('time')
+    description = bottle.request.forms.get('description')
+    required = bottle.request.forms.get('required')
+    fee = bottle.request.forms.get('fee')
+    event_db.insert({'id': random.randint(1,100000), 'user': 'test', 'name': name, 'game': game, 'location': location, 'time': time, 'description': description, 'required': required, 'fee': fee})
+    return {'Success': 'Event Created'}
+
+@app.get('/api/event/list')
+def get_events():
+    return str(event_db.all())
+
 
 @app.route('/')
 def server_static():
