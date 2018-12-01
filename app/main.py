@@ -18,6 +18,8 @@ class AuthBackend(object):
         Returns:
             A dict representing User Record or None.
         """
+        print('Login attempt from: {}:{}'.format(username, password))
+
         if username == self.user['username'] and password == self.user['password']:
             return self.user
         return None
@@ -67,10 +69,12 @@ def create_user():
 @app.route('/')
 def server_static():
     return bottle.static_file('index.html', root='../html')
-
 @app.route('/<filename>')
 def server_static(filename):
     return bottle.static_file(filename, root='../html')
+@app.route('/js/<filename>')
+def server_static(filename):
+    return bottle.static_file(filename, root='../html/js')
 
 
 bottle.run(app=app, port=8080)
