@@ -1,5 +1,7 @@
 'use strict'
 
+var authorized = false;
+
 function userLogin() {
     $('#signin-button').on('click', function() {
         var email = $('#inputEmail').val();
@@ -19,6 +21,7 @@ function userLogin() {
                 window.location.href = "/";
                 $('#join_group').prop('disabled', false);
                 $('#host_group').prop('disabled', false);
+                authorized = true;
             })
             .fail(function(data) {
                 console.log(data.AuthError);
@@ -28,31 +31,8 @@ function userLogin() {
 }
 
 
-
-function createAccount() {
-    var email = $("email").val();
-    var new_pass = $('#new_password').val();
-
-    $.ajax({
-        url: '',
-        type: 'POST',
-        data: {
-            email: email,
-            password: new_pass
-        },
-        cache: false,
-        timeout: 600000,
-    }).done(function(data) {
-        // take back to login screen?
-
-    }).fail(function(data){
-
-    });
-}
-
-
-
 function init() {
+    
     userLogin();
 }
 
