@@ -1,11 +1,11 @@
 import bottle
 from bottle_jwt import (JWTProviderPlugin, jwt_auth_required)
+from tinydb import TinyDB, Query
 
 
 app = bottle.Bottle()
 
 server_secret = 'TEAMROCKET'
-
 
 class AuthBackend(object):
     user = {'id': 1237832, 'username': 'ben', 'password': '123', 'data': {'sex': 'male', 'active': True}}
