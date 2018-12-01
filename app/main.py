@@ -65,16 +65,26 @@ def create_event():
     return {'Success': 'Event Created'}
 
 
+@app.get('/api/event/<id>')
+#@jwt_auth_required
+def get_events(id):
+    event = Query()
+    return str(event_db.search(event.id == id))
+
+
 @app.get('/api/event/list')
+#@jwt_auth_required
 def get_events():
     return str(event_db.all())
 
 @app.get('/api/event/list/<user>')
+#@jwt_auth_required
 def get_events(user):
     event = Query()
     return str(event_db.search(event.user == user))
 
 @app.route('/api/event/delete/<event_id>')
+#@jwt_auth_required
 def delete(event_id):
     event = Query()
     find_event = event_db.search(event.id == int(event_id))
