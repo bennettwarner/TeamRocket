@@ -1,7 +1,6 @@
 import bottle
 from bottle_jwt import (JWTProviderPlugin, jwt_auth_required)
 from tinydb import TinyDB, Query
-import time
 
 user_db = TinyDB('users.json')
 event_db = TinyDB('events.json')
@@ -11,7 +10,7 @@ app = bottle.Bottle()
 server_secret = 'TEAMROCKET'
 
 class AuthBackend(object):
-    user = {'id': 1237832, 'username': 'teamrocket', 'password': '123', 'data': {'sex': 'male', 'active': True}}
+    user = {'id': 1237832, 'username': 'test@test', 'password': '123', 'data': {'sex': 'male', 'active': True}}
 
     def authenticate_user(self, username, password):
         """Authenticate User by username and password.
@@ -45,7 +44,7 @@ provider_plugin = JWTProviderPlugin(
 app.install(provider_plugin)
 
 
-@app.get('/')
+@app.get('/authtest')
 @jwt_auth_required
 def private_resource():
     return {"Auth": "True"}
@@ -64,4 +63,14 @@ def create_user():
         return {'Result': 'Success'}
 
 '''
+
+@app.route('/')
+def server_static():
+    return bottle.static_file('index.html', root='../html')
+
+@app.route('/<filename>')
+def server_static(filename):
+    return bottle.static_file(filename, root='../html')
+
+
 bottle.run(app=app, port=8080)
