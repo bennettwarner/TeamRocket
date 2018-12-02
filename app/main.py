@@ -64,9 +64,25 @@ def create_event():
     event_db.insert({'id': random.randint(1,100000), 'user': 'test', 'name': name, 'game': game, 'location': location, 'time': time, 'description': description, 'required': required, 'fee': fee})
     return {'Success': 'Event Created'}
 
+
 @app.get('/api/event/list')
 def get_events():
     return str(event_db.all())
+
+@app.get('/api/event/list/<user>')
+def get_events(user):
+    event = Query()
+    return str(event_db.search(event.user == user))
+
+@app.route('/api/event/delete/<event_id>')
+def delete(event_id):
+    event = Query()
+    find_event = event_db.search(event.id == int(event_id))
+    if event_id=='' or len(find_event) == 0:
+        return {'Error':'Invalid event id'}
+    else:
+        event_db.remove(event.id == int(event_id))
+        return {'Success': 'Event Removed'}
 
 
 @app.route('/')
