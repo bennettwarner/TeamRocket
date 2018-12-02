@@ -1,0 +1,74 @@
+<DOCTYPE! html>
+	<html>
+		<head>
+			<title>Find Events</title>
+			<link href = "https://bootswatch.com/4/darkly/bootstrap.css" rel = "stylesheet">
+			<style>
+			* {
+			  box-sizing: border-box;
+			}
+
+			/* Style the search field */
+			form.example input[type=text] {
+			  padding: 10px;
+			  font-size: 17px;
+			  border: 1px solid grey;
+			  float: left;
+			  width: 80%;
+			  background: #f1f1f1;
+			  border-radius: 25px;
+			}
+
+			/* Style the submit button */
+			form.example button {
+			  float: left;
+			  width: 20%;
+			  padding: 10px;
+			  background: purple;
+			  color: white;
+			  font-size: 25px;
+			  border-radius: 25px;
+			  border: 1px solid grey;
+			  border-left: none; /* Prevent double borders */
+			  cursor: pointer;
+			  
+			}
+
+			form.example button:hover {
+			  background: #000;
+			}
+
+			/* Clear floats */
+			form.example::after {
+			  content: "";
+			  clear: both;
+			  display: table;
+			}
+			img{
+			height: 300px;
+			}
+		</style>
+		</head>
+		<div class = "container">
+		<body>
+		<h1 class = "text-center"><u><b>Find Events</b></u></h1>
+		 <!-- Load icon library -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<!-- The form -->
+		<form class="example" action="action_page.php">
+		  <input type="text" placeholder="Search.." name="search">
+		  <button type="submit"><i class="fa fa-search"></i></button>
+		</form> 
+		<div class = "row">
+			<div class = "col-lg-6">
+				<img src = "https://www.oratoryprepomega.org/wp-content/uploads/2018/04/Feature-Image-1-1200x1200.jpg" alt = "csgo 1">
+				</div>
+			<div class = "col-lg-6">
+				<img src = "http://www.pinnacle.com/Cms_Data/Contents/Guest/Media/betting-articles/e-sports/e-sports-hub/how-to-bet-on-cs-go-hero.jpg" alt = "csgo 2">
+				</div>
+		</div>
+		</body>
+		</div>
+	</html>
+	
